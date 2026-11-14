@@ -1,81 +1,73 @@
-> [!CAUTION]
-> The only official places to download Fishstrap are this GitHub repository and
-> our website <https://www.fishstrap.app>. Any other websites offering downloads
-> or claiming to be us are not controlled by us, do not download from them.
-
 <div align="center">
 
-![][banner-light]
-![][banner-dark]
+<img src="Images/SakuraTrap-Icon.png" width="140" alt="SakuraTrap" />
 
-![][badge-license]
-![][badge-actions]
-![][badge-downloads]
-[![][badge-latest]][repo-latest]
-[![][badge-discord]][discord-invite]
-![][badge-stars]
+# SakuraTrap
+
+**Кастомный лаунчер Roblox с профилями производительности в один клик**
+
+[![CI](https://img.shields.io/github/actions/workflow/status/mel0k1/SakuraTrap/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/mel0k1/SakuraTrap/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/mel0k1/SakuraTrap?style=flat-square)](LICENSE)
+[![English](https://img.shields.io/badge/README-English-ff69b4?style=flat-square)](README.en.md)
 
 </div>
 
-Fishstrap (pronounced fish-strap) is a custom bootstrapper for Roblox based on
-[Bloxstrap][bloxstrap] (pronounced blox-strap). It provides additional features
-to enhance your experience.
+SakuraTrap — форк [Fishstrap](https://github.com/fishstrap/fishstrap), который сам является форком [Bloxstrap](https://github.com/bloxstraplabs/bloxstrap). Это лаунчер для Roblox на Windows 10 и новее: он устанавливает и обновляет игру, применяет FastFlags, моды и создаёт ярлыки вместо стандартного бутстраппера Roblox.
 
-If you found any bugs, please [open an issue here][repo-new-issue] or make a new
-post in [our Discord server][discord-invite]'s `#support-and-bugs` channel.
+Главная идея SakuraTrap — не заставлять пользователя разбираться в сотнях FastFlags вручную. Вместо этого вы выбираете один профиль производительности, и лаунчер сам настраивает согласованный набор флагов: частота кадров, качество рендера, сглаживание и детализация геометрии меняются согласованно, а не поодиночке.
 
-> [!NOTE]
-> Fishstrap is an application for **Windows 10 and above.** For other operating
-> systems, such as Mac OS and various Linux distributions, you can try
-> [AppleBlox][appleblox] and [Sober][sober] respectively.
+> [!WARNING]
+> SakuraTrap не связан с Roblox Corporation. Roblox ограничивает локальные FastFlags allowlist'ом — флаги вне списка клиент игнорирует, поэтому часть настроек может не применяться. Это ограничение самой Roblox, а не лаунчера.
 
-## Features
+## Возможности
 
-- Detailed server information using [RoValra][rovalra]'s API
-- Support for Roblox Studio
-- Unhidden FastFlags editor
-  - You cannot apply FastFlags not present in the allowlist. This does not
-    affect Roblox Studio. [Learn more][devforum-fflags]
-- Global Basic Settings editor
-  - Ability to increase frame rate cap, toggle quality levels and more
-- Fishstrap's own game invites
-  - Try it out now — this link will lead you to Crossroads (don't turn left!):
-    <https://www.fishstrap.app/v1/joingame?placeId=1818>
-- Cache cleaner, channel switcher and many more
+- **Профили FastFlags** — Default / Balanced / Performance / Quality одним выбором в настройках (см. таблицу ниже)
+- Всё, что умеет Fishstrap: разблокировка частоты кадров, выбор рендера (Vulkan / D3D11), MSAA, детализация геометрии, моды (курсоры, звуки, старые текстуры), Discord Rich Presence, поддержка Roblox Studio, кастомные диалоги запуска
+- Полный редактор FastFlags и редактор Global Basic Settings (лимит FPS, уровни качества, чувствительность мыши)
+- Иконка сакуры и свежий ребрендинг
 
-## Special thanks
+## Профили FastFlags
 
-- [Valra](https://github.com/NotValra) for providing their API
-- Other independent contributors
+Находятся в **Настройки → FastFlags → Профиль производительности**. Профиль управляет только «своими» флагами: ваши ручные настройки и флаги из редактора не затрагиваются. Выбор профиля запоминается и восстанавливается при следующем запуске.
 
-<div align="center">
+| Флаг | Назначение | Balanced | Performance | Quality | Default |
+|---|---|---|---|---|---|
+| `DFIntTaskSchedulerTargetFps` | Целевой FPS | 144 | 240 | 240 | — |
+| `DFIntDebugFRMQualityLevelOverride` | Качество рендера (1–21) | 10 | 1 | 21 | — |
+| `FIntDebugForceMSAASamples` | Сглаживание | — | 1 | 4 | — |
+| `DFFlagDebugRenderForceTechnologyVoxel` | Упрощённое освещение | — | True | — | — |
+| `DFIntCSGLevelOfDetailSwitchingDistance*` | Детализация мешей (0–3) | 1 | 0 | 3 | — |
 
-![][repo-showcase-light]
-![][repo-showcase-dark]
+`Default` снимает только флаги профиля, возвращая эти настройки под контроль Roblox и ваших ручных правок.
 
-</div>
+## Установка
 
-[banner-light]: https://github.com/fishstrap/fishstrap/raw/main/Images/Fishstrap-Light.png#gh-light-mode-only
-[banner-dark]:  https://github.com/fishstrap/fishstrap/raw/main/Images/Fishstrap-Dark.png#gh-dark-mode-only
+1. Скачайте `SakuraTrap.exe` со страницы [Releases](https://github.com/mel0k1/SakuraTrap/releases)
+2. Запустите — лаунчер сам установит Roblox или подхватит уже установленную версию
+3. Откройте настройки, раздел FastFlags, выберите профиль производительности
 
-[badge-license]:   https://img.shields.io/github/license/fishstrap/fishstrap?style=flat-square
-[badge-actions]:   https://img.shields.io/github/actions/workflow/status/fishstrap/fishstrap/ci-release.yml?branch=main&style=flat-square&label=builds
-[badge-downloads]: https://img.shields.io/github/downloads/fishstrap/fishstrap/latest/total?style=flat-square&color=981bfe
-[badge-latest]:    https://img.shields.io/github/v/release/fishstrap/fishstrap?style=flat-square&color=7a39fb
-[badge-discord]:   https://img.shields.io/discord/1299397064165429360?style=flat-square&logo=discord&logoColor=white&logoSize=auto&label=discord&color=4d3dff
-[badge-stars]:     https://img.shields.io/github/stars/fishstrap/fishstrap?style=flat-square&color=dd9900
+## Сборка из исходников
 
-[repo-latest]:    https://github.com/fishstrap/fishstrap/releases/latest
-[repo-new-issue]: https://github.com/fishstrap/fishstrap/issues/new/choose
+Нужен Windows и .NET SDK 6.0 (версия зафиксирована в `global.json`). Репозиторий содержит сабмодуль `wpfui`, поэтому клонируйте с `--recursive`.
 
-[repo-showcase-dark]:  https://github.com/fishstrap/fishstrap/raw/main/Images/Showcase-Dark.png#gh-dark-mode-only
-[repo-showcase-light]:  https://github.com/fishstrap/fishstrap/raw/main/Images/Showcase-Light.png#gh-light-mode-only
+```sh
+git clone --recursive https://github.com/mel0k1/SakuraTrap.git
+cd SakuraTrap
+dotnet publish Bloxstrap/Bloxstrap.csproj -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
+```
 
-[discord-invite]: https://discord.gg/SRs5zb9BJd
+Готовый `SakuraTrap.exe` появится в `Bloxstrap/bin/Release/net6.0-windows/win-x64/publish/`. Сборка также прогоняется в CI на каждый push — артефакт можно забрать со страницы Actions.
 
-[bloxstrap]: https://bloxstraplabs.com
-[appleblox]: https://github.com/AppleBlox/appleblox
-[sober]:     https://sober.vinegarhq.org
-[rovalra]:   https://www.rovalra.com
+## Планы
 
-[devforum-fflags]: https://devforum.roblox.com/t/allowlist-for-local-client-configuration-via-fast-flags/3966569
+Дорожная карта идей — в [ROADMAP.md](ROADMAP.md). Баги и предложения — в [Issues](https://github.com/mel0k1/SakuraTrap/issues).
+
+## Благодарности
+
+- [Fishstrap](https://github.com/fishstrap/fishstrap) — прямая база форка (MIT)
+- [pizzaboxer](https://github.com/pizzaboxer) и [Bloxstrap](https://github.com/bloxstraplabs/bloxstrap) — оригинальный проект (MIT)
+- [WPF-UI](https://github.com/lepoco/wpfui) и все авторы библиотек, перечисленных в разделе «Лицензии» внутри приложения
+
+## Лицензия
+
+[MIT](LICENSE). Проект наследует код Fishstrap (MIT, © returnrqt) и Bloxstrap (MIT, © pizzaboxer) — их уведомления сохранены в [LICENSE](LICENSE) и [LICENSE.Bloxstrap](LICENSE.Bloxstrap).
