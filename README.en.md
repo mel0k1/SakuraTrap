@@ -40,6 +40,17 @@ Located in **Settings → FastFlags → Performance profile**. A profile only to
 
 `Default` clears only the profile flags, handing those settings back to Roblox and your manual edits.
 
+## Custom profiles, scheduler and hardware
+
+- **Custom profiles** — the Save button records your current FastFlags into a named profile. Profiles apply in one click, can be deleted, and travel between machines through JSON export/import.
+- **Scheduler** — pick hours (for example, 22:00–08:00) and a profile: every Roblox launch inside that window applies the chosen flag set automatically. Handy for a quiet night setup.
+- **Hardware recommendation** — on first run SakuraTrap detects your GPU and CPU through WMI and suggests a profile via a simple heuristic: integrated graphics and weak GPUs → Performance, mid-range GTX/RX → Balanced, high-end RTX/RX → Quality. Apply it with one button or dismiss it.
+
+## Theme and statistics
+
+- **Sakura Night** — a dark theme with a sakura-pink accent, available in Settings → Appearance.
+- **Session statistics** — the launcher records Roblox sessions (start, end, number of game joins) and shows a summary on the Integrations page.
+
 ## Installation
 
 1. Download `SakuraTrap.exe` from the [Releases](https://github.com/mel0k1/SakuraTrap/releases) page
