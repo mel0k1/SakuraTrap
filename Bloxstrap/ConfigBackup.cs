@@ -1,5 +1,6 @@
 namespace Bloxstrap
 {
+    using System.IO.Compression;
     using System.Windows;
 
     public static class ConfigBackup
