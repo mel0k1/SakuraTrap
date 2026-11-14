@@ -5464,5 +5464,230 @@ namespace Bloxstrap.Resources {
                 return ResourceManager.GetString("Menu.Integrations.SessionStats.Week.Sessions", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string Common_Create {
+            get {
+                return ResourceManager.GetString("Common.Create", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Save mod pack as.
+        /// </summary>
+        public static string Dialog_SaveModPack_Title {
+            get {
+                return ResourceManager.GetString("Dialog.SaveModPack.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Mod packs.
+        /// </summary>
+        public static string Menu_Mods_Packs_Title {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Group installed mods into named packs and toggle them with one switch. Pack files live in Modifications\Packs and are applied at the next Roblox launch..
+        /// </summary>
+        public static string Menu_Mods_Packs_Description {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Create pack from current mods.
+        /// </summary>
+        public static string Menu_Mods_Packs_Create {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.Create", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Moves all mod files from the Modifications folder into a new pack..
+        /// </summary>
+        public static string Menu_Mods_Packs_CreateDescription {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.CreateDescription", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No packs yet — install some mods and create one..
+        /// </summary>
+        public static string Menu_Mods_Packs_Empty {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.Empty", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} files.
+        /// </summary>
+        public static string Menu_Mods_Packs_FilesCount {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.FilesCount", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A pack named "{0}" already exists..
+        /// </summary>
+        public static string Menu_Mods_Packs_Exists {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.Exists", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Delete pack "{0}"? Its files will be removed from the active mods..
+        /// </summary>
+        public static string Menu_Mods_Packs_DeleteConfirm {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.DeleteConfirm", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to There are no mod files in the Modifications folder..
+        /// </summary>
+        public static string Menu_Mods_Packs_NoMods {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.NoMods", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The operation failed. Close Roblox and make sure the mod files are not in use..
+        /// </summary>
+        public static string Menu_Mods_Packs_OperationFailed {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.OperationFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Client integrity.
+        /// </summary>
+        public static string Menu_Mods_Integrity_Title {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to See which client files are replaced by mods and restore the originals..
+        /// </summary>
+        public static string Menu_Mods_Integrity_Description {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Integrity check.
+        /// </summary>
+        public static string Menu_Mods_Integrity_Actions_Title {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.Actions.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Check the state of applied mods, or remove them all and let the originals be restored from Roblox packages..
+        /// </summary>
+        public static string Menu_Mods_Integrity_Actions_Description {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.Actions.Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Check.
+        /// </summary>
+        public static string Menu_Mods_Integrity_Check {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.Check", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restore originals.
+        /// </summary>
+        public static string Menu_Mods_Integrity_Restore {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.Restore", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No mods are applied to the client..
+        /// </summary>
+        public static string Menu_Mods_Integrity_NoMods {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.NoMods", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Remove all applied mods? Original files will be restored from Roblox packages at the next Roblox launch..
+        /// </summary>
+        public static string Menu_Mods_Integrity_RestoreConfirm {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.RestoreConfirm", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Removed {0} files ({1} failed — close Roblox and try again). Originals will be restored at the next Roblox launch..
+        /// </summary>
+        public static string Menu_Mods_Integrity_Restored {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.Restored", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to applied.
+        /// </summary>
+        public static string Menu_Mods_Integrity_StatusApplied {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.StatusApplied", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to client file differs from the mod.
+        /// </summary>
+        public static string Menu_Mods_Integrity_StatusModified {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.StatusModified", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to mod file missing, original returns at next launch.
+        /// </summary>
+        public static string Menu_Mods_Integrity_StatusSourceMissing {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.StatusSourceMissing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to missing from the client.
+        /// </summary>
+        public static string Menu_Mods_Integrity_StatusClientMissing {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.StatusClientMissing", resourceCulture);
+            }
+        }
     }
 }

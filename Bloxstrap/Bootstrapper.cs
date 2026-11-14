@@ -1594,6 +1594,10 @@ namespace Bloxstrap
                 // get relative directory path
                 string relativeFile = file.Substring(Paths.Modifications.Length + 1);
 
+                // the pack storage itself is applied through the pack manager, never directly
+                if (relativeFile.StartsWith(@"Packs\", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
                 // v1.7.0 - README has been moved to the preferences menu now
                 if (relativeFile == "README.txt")
                 {

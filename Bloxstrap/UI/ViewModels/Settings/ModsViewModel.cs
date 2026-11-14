@@ -11,6 +11,9 @@ using CommunityToolkit.Mvvm.Input;
 
 using Bloxstrap.Models.SettingTasks;
 using Bloxstrap.AppData;
+using Bloxstrap.UI.Elements.Dialogs;
+
+using System.Collections.ObjectModel;
 
 namespace Bloxstrap.UI.ViewModels.Settings
 {
@@ -67,6 +70,164 @@ namespace Bloxstrap.UI.ViewModels.Settings
 
         public ICommand OpenCompatSettingsCommand => new RelayCommand(OpenCompatSettings);
 
+        #region Mod packs
+        public ObservableCollection<PackItem> Packs { get; } = new();
+
+        public Visibility PacksVisibility => Packs.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility PacksEmptyVisibility => Packs.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
+
+        public ICommand CreatePackCommand => new RelayCommand(CreatePack);
+
+        public ICommand DeletePackCommand => new RelayCommand<PackItem>(DeletePack);
+
+        private void CreatePack()
+        {
+            var dialog = new SaveCustomProfileDialog(Strings.Dialog_SaveModPack_Title);
+            dialog.ShowDialog();
+
+            if (dialog.Result != MessageBoxResult.OK || String.IsNullOrWhiteSpace(dialog.ProfileName))
+                return;
+
+            string name = string.Concat(dialog.ProfileName.Trim().Split(Path.GetInvalidFileNameChars())).Trim();
+
+            if (String.IsNullOrEmpty(name))
+                return;
+
+            if (App.ModPacks.Prop.ContainsKey(name))
+            {
+                Frontend.ShowMessageBox(String.Format(Strings.Menu_Mods_Packs_Exists, name), MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                int count = App.ModPacks.CreateFromCurrentMods(name);
+
+                if (count == 0)
+                {
+                    Frontend.ShowMessageBox(Strings.Menu_Mods_Packs_NoMods, MessageBoxImage.Information);
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                App.Logger.WriteLine("ModsViewModel::CreatePack", $"Failed to create pack '{name}'");
+                App.Logger.WriteException("ModsViewModel::CreatePack", ex);
+
+                Frontend.ShowMessageBox(Strings.Menu_Mods_Packs_OperationFailed, MessageBoxImage.Error);
+                return;
+            }
+
+            RefreshPacks();
+        }
+
+        private void DeletePack(PackItem? item)
+        {
+            if (item is null)
+                return;
+
+            MessageBoxResult result = Frontend.ShowMessageBox(
+                String.Format(Strings.Menu_Mods_Packs_DeleteConfirm, item.Name),
+                MessageBoxImage.Warning,
+                MessageBoxButton.YesNo
+            );
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                App.ModPacks.Delete(item.Name);
+            }
+            catch (Exception ex)
+            {
+                App.Logger.WriteLine("ModsViewModel::DeletePack", $"Failed to delete pack '{item.Name}'");
+                App.Logger.WriteException("ModsViewModel::DeletePack", ex);
+
+                Frontend.ShowMessageBox(Strings.Menu_Mods_Packs_OperationFailed, MessageBoxImage.Error);
+                return;
+            }
+
+            RefreshPacks();
+        }
+
+        private void RefreshPacks()
+        {
+            Packs.Clear();
+
+            foreach (string name in App.ModPacks.Names)
+                Packs.Add(new PackItem(name));
+
+            OnPropertyChanged(nameof(PacksVisibility));
+            OnPropertyChanged(nameof(PacksEmptyVisibility));
+        }
+        #endregion
+
+        #region Client integrity
+        public string IntegrityReport { get; set; } = "";
+
+        public Visibility IntegrityReportVisibility => String.IsNullOrEmpty(IntegrityReport) ? Visibility.Collapsed : Visibility.Visible;
+
+        public ICommand CheckIntegrityCommand => new RelayCommand(CheckIntegrity);
+
+        public ICommand RestoreOriginalsCommand => new RelayCommand(RestoreOriginals);
+
+        private void CheckIntegrity()
+        {
+            var files = ClientIntegrity.Check();
+
+            if (files.Count == 0)
+            {
+                IntegrityReport = Strings.Menu_Mods_Integrity_NoMods;
+            }
+            else
+            {
+                var builder = new StringBuilder();
+
+                foreach (var file in files)
+                {
+                    string status = file.Status switch
+                    {
+                        ModFileStatus.Applied => Strings.Menu_Mods_Integrity_StatusApplied,
+                        ModFileStatus.Modified => Strings.Menu_Mods_Integrity_StatusModified,
+                        ModFileStatus.SourceMissing => Strings.Menu_Mods_Integrity_StatusSourceMissing,
+                        ModFileStatus.ClientMissing => Strings.Menu_Mods_Integrity_StatusClientMissing,
+                        _ => Strings.Common_Unknown
+                    };
+
+                    builder.AppendLine($"{file.RelativePath} — {status}");
+                }
+
+                IntegrityReport = builder.ToString().TrimEnd();
+            }
+
+            OnPropertyChanged(nameof(IntegrityReport));
+            OnPropertyChanged(nameof(IntegrityReportVisibility));
+        }
+
+        private void RestoreOriginals()
+        {
+            MessageBoxResult result = Frontend.ShowMessageBox(
+                Strings.Menu_Mods_Integrity_RestoreConfirm,
+                MessageBoxImage.Warning,
+                MessageBoxButton.YesNo
+            );
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            var (removed, failed) = ClientIntegrity.RestoreOriginals();
+
+            IntegrityReport = String.Format(Strings.Menu_Mods_Integrity_Restored, removed, failed);
+
+            OnPropertyChanged(nameof(IntegrityReport));
+            OnPropertyChanged(nameof(IntegrityReportVisibility));
+
+            RefreshPacks();
+        }
+        #endregion
+
         public ModPresetTask OldAvatarBackgroundTask { get; } = new("OldAvatarBackground", @"ExtraContent\places\Mobile.rbxl", "OldAvatarBackground.rbxl");
 
         public ModPresetTask OldCharacterSoundsTask { get; } = new("OldCharacterSounds", new()
@@ -111,6 +272,27 @@ namespace Bloxstrap.UI.ViewModels.Settings
             else
                 Frontend.ShowMessageBox(Strings.Common_RobloxNotInstalled, MessageBoxImage.Error);
 
+        }
+    }
+
+    public class PackItem
+    {
+        private readonly ModPack _pack;
+
+        public PackItem(string name)
+        {
+            Name = name;
+            _pack = App.ModPacks.Prop[name];
+        }
+
+        public string Name { get; }
+
+        public string FilesLabel => String.Format(Strings.Menu_Mods_Packs_FilesCount, _pack.Files.Count);
+
+        public bool IsEnabled
+        {
+            get => _pack.Enabled;
+            set => App.ModPacks.SetEnabled(Name, value);
         }
     }
 }

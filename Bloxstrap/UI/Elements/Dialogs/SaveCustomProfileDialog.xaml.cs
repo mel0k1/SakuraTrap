@@ -8,9 +8,18 @@ namespace Bloxstrap.UI.Elements.Dialogs
 
         public string ProfileName => NameTextBox.Text;
 
-        public SaveCustomProfileDialog()
+        public SaveCustomProfileDialog() : this("") { }
+
+        public SaveCustomProfileDialog(string title)
         {
             InitializeComponent();
+
+            if (!String.IsNullOrEmpty(title))
+            {
+                Title = title;
+                DialogTitleBar.Title = title;
+            }
+
             NameTextBox.Focus();
         }
 

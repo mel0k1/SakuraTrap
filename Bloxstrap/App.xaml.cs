@@ -67,6 +67,8 @@ namespace Bloxstrap
 
         public static readonly CustomProfileManager CustomProfiles = new();
 
+        public static readonly ModPackManager ModPacks = new();
+
         public static readonly SessionStatsManager SessionStats = new();
 
         public static readonly CookiesManager Cookies = new();
@@ -326,6 +328,7 @@ namespace Bloxstrap
                 FastFlags.Load();
                 GlobalSettings.Load();
                 CustomProfiles.Load(false);
+                ModPacks.Load(false);
                 SessionStats.Load(false);
 
                 Logger.WriteLine(LOG_IDENT, $"Distributor: {Settings.Prop.DistributorType}");
