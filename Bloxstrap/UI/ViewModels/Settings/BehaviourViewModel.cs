@@ -120,15 +120,15 @@
             }
         }
 
-        public bool CleanerFishstrap
+        public bool CleanerSakuraTrap
         {
-            get => CleanerItems.Contains("FishstrapLogs");
+            get => CleanerItems.Contains("SakuraTrapLogs");
             set
             {
                 if (value)
-                    CleanerItems.Add("FishstrapLogs");
+                    CleanerItems.Add("SakuraTrapLogs");
                 else
-                    CleanerItems.Remove("FishstrapLogs");
+                    CleanerItems.Remove("SakuraTrapLogs");
             }
         }
     }
