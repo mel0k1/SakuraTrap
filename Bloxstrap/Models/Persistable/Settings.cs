@@ -30,6 +30,7 @@ namespace Bloxstrap.Models.Persistable
         public string Locale { get; set; } = "nil";
         public bool ForceRobloxLanguage { get; set; } = false;
         public bool UseFastFlagManager { get; set; } = true;
+        public string FlagProfile { get; set; } = FlagProfiles.DefaultProfile;
         public bool WPFSoftwareRender { get; set; } = false;
         public bool EnableAnalytics { get; set; } = false;
         public bool StaticDirectory { get; set; } = false;

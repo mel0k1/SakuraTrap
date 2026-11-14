@@ -1929,4 +1929,10 @@ Press cancel to go back.</value>
   <data name="Menu.Shortcuts.Game.Failed" xml:space="preserve">
     <value>Couldn't create the shortcut.</value>
   </data>
+  <data name="Menu.FastFlags.Profile.Title" xml:space="preserve">
+    <value>Performance profile</value>
+  </data>
+  <data name="Menu.FastFlags.Profile.Description" xml:space="preserve">
+    <value>Applies a curated set of FastFlags balancing frame rate and visual quality. Default clears the profile flags only, your custom flags stay untouched.</value>
+  </data>
 </root>

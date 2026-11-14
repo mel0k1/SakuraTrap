@@ -1550,4 +1550,10 @@ SakuraTrap был установлен по адресу "{1}".</value>
   <data name="Menu.Integrations.StatusDisplay.Description" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="Menu.FastFlags.Profile.Title" xml:space="preserve">
+    <value>Профиль производительности</value>
+  </data>
+  <data name="Menu.FastFlags.Profile.Description" xml:space="preserve">
+    <value>Применяет готовый набор FastFlags под выбранный баланс FPS и качества картинки. «Default» снимает только флаги профиля, ваши собственные флаги не трогает.</value>
+  </data>
 </root>

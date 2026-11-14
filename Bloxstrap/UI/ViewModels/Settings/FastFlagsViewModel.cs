@@ -30,6 +30,20 @@ namespace Bloxstrap.UI.ViewModels.Settings
             set => App.Settings.Prop.UseFastFlagManager = value;
         }
 
+        public IReadOnlyList<string> ProfileNames => FlagProfiles.Names;
+
+        public string SelectedProfile
+        {
+            get => App.Settings.Prop.FlagProfile;
+            set
+            {
+                App.Settings.Prop.FlagProfile = value;
+                FlagProfiles.Apply(App.FastFlags, value);
+                OnPropertyChanged(nameof(SelectedProfile));
+                RequestPageReloadEvent?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
         public IReadOnlyDictionary<MSAAMode, string?> MSAALevels => FastFlagManager.MSAAModes;
 
         public MSAAMode SelectedMSAALevel

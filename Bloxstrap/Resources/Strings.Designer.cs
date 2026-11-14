@@ -5194,5 +5194,23 @@ namespace Bloxstrap.Resources {
                 return ResourceManager.GetString("Uninstaller.Uninstall", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Performance profile.
+        /// </summary>
+        public static string Menu_FastFlags_Profile_Title {
+            get {
+                return ResourceManager.GetString("Menu.FastFlags.Profile.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Applies a curated set of FastFlags.
+        /// </summary>
+        public static string Menu_FastFlags_Profile_Description {
+            get {
+                return ResourceManager.GetString("Menu.FastFlags.Profile.Description", resourceCulture);
+            }
+        }
     }
 }
