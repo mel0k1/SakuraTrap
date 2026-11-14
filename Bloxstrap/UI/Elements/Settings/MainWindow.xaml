@@ -75,11 +75,13 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <ui:InfoBar x:Name="AlertBar" Grid.Row="0" Margin="0,0,12,0" Padding="8" Visibility="Collapsed" IsOpen="True" Message="" Severity="Warning" IsClosable="False" />
-                <ui:Breadcrumb Grid.Row="1" Margin="0,0,0,5" Navigation="{Binding ElementName=RootNavigation}" />
-                <Frame x:Name="RootFrame" Grid.Row="2" />
+                <ui:InfoBar x:Name="UpdateBar" Grid.Row="0" Margin="0,0,12,4" Padding="8" Visibility="Collapsed" IsOpen="True" Severity="Informational" IsClosable="True" Cursor="Hand" MouseLeftButtonUp="UpdateBar_Click" />
+                <ui:InfoBar x:Name="AlertBar" Grid.Row="1" Margin="0,0,12,0" Padding="8" Visibility="Collapsed" IsOpen="True" Message="" Severity="Warning" IsClosable="False" />
+                <ui:Breadcrumb Grid.Row="2" Margin="0,0,0,5" Navigation="{Binding ElementName=RootNavigation}" />
+                <Frame x:Name="RootFrame" Grid.Row="3" />
             </Grid>
         </Grid>
 

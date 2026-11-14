@@ -5383,5 +5383,86 @@ namespace Bloxstrap.Resources {
                 return ResourceManager.GetString("Menu.Integrations.SessionStats.Playtime", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to FastFlags profile.
+        /// </summary>
+        public static string ContextMenu_Profile_Title {
+            get {
+                return ResourceManager.GetString("ContextMenu.Profile.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Profile {0} applied — it will take effect the next time Roblox starts..
+        /// </summary>
+        public static string ContextMenu_Profile_Applied {
+            get {
+                return ResourceManager.GetString("ContextMenu.Profile.Applied", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No custom profiles yet.
+        /// </summary>
+        public static string ContextMenu_Profile_None {
+            get {
+                return ResourceManager.GetString("ContextMenu.Profile.None", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to SakuraTrap update available.
+        /// </summary>
+        public static string Menu_Update_Title {
+            get {
+                return ResourceManager.GetString("Menu.Update.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to SakuraTrap v{0} is available — click to open the release page..
+        /// </summary>
+        public static string Menu_Update_Message {
+            get {
+                return ResourceManager.GetString("Menu.Update.Message", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Last 7 days.
+        /// </summary>
+        public static string Menu_Integrations_SessionStats_Week_Title {
+            get {
+                return ResourceManager.GetString("Menu.Integrations.SessionStats.Week.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} h {1} m.
+        /// </summary>
+        public static string Menu_Integrations_SessionStats_Week_DurationHours {
+            get {
+                return ResourceManager.GetString("Menu.Integrations.SessionStats.Week.DurationHours", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} m.
+        /// </summary>
+        public static string Menu_Integrations_SessionStats_Week_DurationMinutes {
+            get {
+                return ResourceManager.GetString("Menu.Integrations.SessionStats.Week.DurationMinutes", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} sessions.
+        /// </summary>
+        public static string Menu_Integrations_SessionStats_Week_Sessions {
+            get {
+                return ResourceManager.GetString("Menu.Integrations.SessionStats.Week.Sessions", resourceCulture);
+            }
+        }
     }
 }

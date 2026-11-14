@@ -24,6 +24,14 @@ namespace Bloxstrap.Models.Persistable
 
         public bool HardwareProfileDismissed { get; set; } = false;
 
+        public DateTime LastUpdateCheck { get; set; } = DateTime.MinValue;
+
+        /// <summary>
+        /// The last FastFlags profile applied (built-in or custom), used for the tray menu checkmarks.
+        /// Falls back to Settings.FlagProfile when unset.
+        /// </summary>
+        public string? ActiveProfile { get; set; } = null;
+
         public WindowState SettingsWindow { get; set; } = new();
 
         #region Deprecated properties

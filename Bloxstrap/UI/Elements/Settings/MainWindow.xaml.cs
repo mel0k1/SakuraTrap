@@ -62,6 +62,11 @@ namespace Bloxstrap.UI.Elements.Settings
                     fastflags.PageType = typeof(FastFlagsDisabled);
             });
 
+            UpdateChecker.UpdateAvailableEvent += UpdateChecker_UpdateAvailable;
+
+            if (UpdateChecker.UpdateAvailable)
+                ShowUpdateAvailable();
+
             if (lastPage != null)
                 SafeNavigate(lastPage);
 
@@ -122,6 +127,26 @@ namespace Bloxstrap.UI.Elements.Settings
             AlreadyRunningSnackbar.Show();
         }
 
+        #region Update notice
+        private void UpdateChecker_UpdateAvailable(object? sender, EventArgs e) => Dispatcher.Invoke(ShowUpdateAvailable);
+
+        private void ShowUpdateAvailable()
+        {
+            UpdateBar.Title = Strings.Menu_Update_Title;
+            UpdateBar.Message = String.Format(Strings.Menu_Update_Message, UpdateChecker.NewVersion);
+            UpdateBar.Visibility = Visibility.Visible;
+        }
+
+        private void UpdateBar_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            // ignore clicks on the InfoBar's own close button
+            if (e.OriginalSource is System.Windows.Controls.Button)
+                return;
+
+            Utilities.ShellExecute(UpdateChecker.ReleasePageUrl);
+        }
+        #endregion
+
         #region INavigationWindow methods
 
         public Frame GetFrame() => RootFrame;
@@ -159,6 +184,8 @@ namespace Bloxstrap.UI.Elements.Settings
 
         private void WpfUiWindow_Closed(object sender, EventArgs e)
         {
+            UpdateChecker.UpdateAvailableEvent -= UpdateChecker_UpdateAvailable;
+
             if (App.LaunchSettings.TestModeFlag.Active)
                 LaunchHandler.LaunchRoblox(LaunchMode.Player);
             else

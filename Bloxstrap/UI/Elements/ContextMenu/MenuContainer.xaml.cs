@@ -44,8 +44,78 @@ namespace Bloxstrap.UI.Elements.ContextMenu
             if (_watcher.RichPresence is not null)
                 RichPresenceMenuItem.Visibility = Visibility.Visible;
 
+            PopulateProfileMenu();
+
             VersionTextBlock.Text = $"{App.ProjectName} v{App.Version}";
         }
+
+        #region Profile switcher
+        private void PopulateProfileMenu()
+        {
+            ProfileMenuItem.Items.Clear();
+
+            string activeProfile = App.State.Prop.ActiveProfile ?? App.Settings.Prop.FlagProfile;
+
+            foreach (string name in FlagProfiles.Names)
+                ProfileMenuItem.Items.Add(BuildProfileItem(name, name == activeProfile));
+
+            IReadOnlyList<string> customProfiles = App.CustomProfiles.Names;
+
+            ProfileMenuItem.Items.Add(new Separator());
+
+            if (customProfiles.Count > 0)
+            {
+                foreach (string name in customProfiles)
+                    ProfileMenuItem.Items.Add(BuildProfileItem(name, name == activeProfile));
+            }
+            else
+            {
+                ProfileMenuItem.Items.Add(new MenuItem { Header = Strings.ContextMenu_Profile_None, IsEnabled = false });
+            }
+        }
+
+        private MenuItem BuildProfileItem(string name, bool isActive)
+        {
+            var item = new MenuItem
+            {
+                Header = name,
+                IsCheckable = true,
+                IsChecked = isActive,
+                Tag = name
+            };
+
+            item.Click += ProfileItem_Click;
+
+            return item;
+        }
+
+        private void ProfileMenuItem_SubmenuOpened(object sender, RoutedEventArgs e) => PopulateProfileMenu();
+
+        private void ProfileItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not MenuItem item || item.Tag is not string name)
+                return;
+
+            if (FlagProfiles.Names.Contains(name))
+            {
+                App.Settings.Prop.FlagProfile = name;
+                FlagProfiles.Apply(App.FastFlags, name);
+            }
+            else
+            {
+                App.CustomProfiles.Apply(name);
+            }
+
+            App.FastFlags.Save();
+
+            App.State.Prop.ActiveProfile = name;
+            App.State.Save();
+
+            App.Logger.WriteLine("MenuContainer::ProfileItem_Click", $"Applied profile '{name}' from the tray menu");
+
+            _watcher.ShowAlert(Strings.ContextMenu_Profile_Title, String.Format(Strings.ContextMenu_Profile_Applied, name));
+        }
+        #endregion
 
         public void ShowServerInformationWindow()
         {

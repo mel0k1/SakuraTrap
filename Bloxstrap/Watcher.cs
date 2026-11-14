@@ -89,6 +89,8 @@ namespace Bloxstrap
 
         public void KillRobloxProcess() => CloseProcess(_watcherData!.ProcessId, true);
 
+        public void ShowAlert(string caption, string message, int duration = 5) => _notifyIcon?.ShowAlert(caption, message, duration, null);
+
         public void CloseProcess(int pid, bool force = false)
         {
             const string LOG_IDENT = "Watcher::CloseProcess";

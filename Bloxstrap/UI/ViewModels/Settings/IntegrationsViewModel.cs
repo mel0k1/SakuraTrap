@@ -3,6 +3,7 @@ using Bloxstrap.UI.Elements.Controls;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using Wpf.Ui.Common.Interfaces;
 
@@ -37,6 +38,9 @@ namespace Bloxstrap.UI.ViewModels.Settings
         {
             OnPropertyChanged(nameof(VulkanFullscreenAllowed));
             OnPropertyChanged(nameof(EnableFakeBorderlessFullscreen));
+            OnPropertyChanged(nameof(SessionStatsSummary));
+            OnPropertyChanged(nameof(WeeklyStats));
+            OnPropertyChanged(nameof(WeeklyStatsVisibility));
         } // vulkan is updated on a different page so we do this
 
         public void OnNavigatedFrom() { }
@@ -134,6 +138,63 @@ namespace Bloxstrap.UI.ViewModels.Settings
             }
         }
 
+        public Visibility WeeklyStatsVisibility => App.SessionStats.Prop.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+
+        public IReadOnlyList<WeeklyStatDay> WeeklyStats
+        {
+            get
+            {
+                var days = new List<WeeklyStatDay>();
+
+                var now = DateTime.Now;
+                var weekStart = now.Date.AddDays(-6);
+
+                var perDay = new Dictionary<DateTime, (TimeSpan Duration, int Sessions)>();
+
+                foreach (var session in App.SessionStats.Prop)
+                {
+                    if (session.Start < weekStart)
+                        continue;
+
+                    var end = session.End ?? now;
+
+                    if (end < session.Start)
+                        end = session.Start;
+
+                    var key = session.Start.Date;
+
+                    if (!perDay.TryGetValue(key, out var value))
+                        value = (TimeSpan.Zero, 0);
+
+                    value.Duration += end - session.Start;
+                    value.Sessions++;
+                    perDay[key] = value;
+                }
+
+                double maxMinutes = perDay.Count == 0 ? 0 : perDay.Values.Max(x => x.Duration.TotalMinutes);
+
+                for (int i = 0; i < 7; i++)
+                {
+                    var day = weekStart.AddDays(i);
+
+                    perDay.TryGetValue(day, out var value);
+
+                    string durationText = value.Duration.TotalHours >= 1
+                        ? String.Format(Strings.Menu_Integrations_SessionStats_Week_DurationHours, (int)value.Duration.TotalHours, value.Duration.Minutes)
+                        : String.Format(Strings.Menu_Integrations_SessionStats_Week_DurationMinutes, (int)Math.Round(value.Duration.TotalMinutes));
+
+                    days.Add(new WeeklyStatDay
+                    {
+                        DayLabel = $"{day:ddd d.MM}",
+                        DurationLabel = $"{durationText} · {String.Format(Strings.Menu_Integrations_SessionStats_Week_Sessions, value.Sessions)}",
+                        BarWidth = maxMinutes > 0 && value.Duration.TotalMinutes > 0 ? Math.Max(3, value.Duration.TotalMinutes / maxMinutes * 260) : 0
+                    });
+                }
+
+                return days;
+            }
+        }
+
         public bool ShowServerDetailsEnabled
         {
             get => App.Settings.Prop.ShowServerDetails;
@@ -220,5 +281,14 @@ namespace Bloxstrap.UI.ViewModels.Settings
         public CustomIntegration? SelectedCustomIntegration { get; set; }
         public int SelectedCustomIntegrationIndex { get; set; }
         public bool IsCustomIntegrationSelected => SelectedCustomIntegration is not null;
+    }
+
+    public class WeeklyStatDay
+    {
+        public string DayLabel { get; set; } = "";
+
+        public string DurationLabel { get; set; } = "";
+
+        public double BarWidth { get; set; } = 0;
     }
 }
