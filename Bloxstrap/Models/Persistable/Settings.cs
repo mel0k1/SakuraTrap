@@ -17,6 +17,9 @@ namespace Bloxstrap.Models.Persistable
         public string RobloxTitle { get; set; } = "Roblox";
         public string RobloxIconCustomLocation { get; set; } = "";
         public Theme Theme { get; set; } = Theme.Default;
+        public bool AutoTheme { get; set; } = false;
+        public string CustomAccentColor { get; set; } = "";
+        public int OldVersionsKept { get; set; } = 0;
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool DeveloperMode { get; set; } = false;
         // PLEASE DONT FORGET TO TURN THIS OFF !!!!

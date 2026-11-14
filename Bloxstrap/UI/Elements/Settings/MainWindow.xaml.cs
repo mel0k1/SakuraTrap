@@ -67,6 +67,8 @@ namespace Bloxstrap.UI.Elements.Settings
             if (UpdateChecker.UpdateAvailable)
                 ShowUpdateAvailable();
 
+            ClientIntegrity.IssuesDetectedEvent += ClientIntegrity_IssuesDetected;
+
             if (lastPage != null)
                 SafeNavigate(lastPage);
 
@@ -137,13 +139,70 @@ namespace Bloxstrap.UI.Elements.Settings
             UpdateBar.Visibility = Visibility.Visible;
         }
 
-        private void UpdateBar_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private bool _isUpdateDownloading = false;
+
+        private async void UpdateBar_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             // ignore clicks on the InfoBar's own close button
             if (e.OriginalSource is System.Windows.Controls.Button)
                 return;
 
-            Utilities.ShellExecute(UpdateChecker.ReleasePageUrl);
+            if (_isUpdateDownloading || !UpdateChecker.UpdateAvailable)
+                return;
+
+            var result = Frontend.ShowMessageBox(
+                String.Format(Strings.Menu_Update_Confirm, UpdateChecker.NewVersion),
+                MessageBoxImage.Question,
+                MessageBoxButton.YesNo
+            );
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            _isUpdateDownloading = true;
+
+            var progress = new Progress<int>(percent =>
+                UpdateBar.Message = String.Format(Strings.Menu_Update_Downloading, UpdateChecker.NewVersion, percent)
+            );
+
+            try
+            {
+                await UpdateChecker.DownloadAndInstallAsync(progress);
+
+                // the freshly downloaded installer takes over from here
+                Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                App.Logger.WriteLine("MainWindow::UpdateBar_Click", "Update download failed");
+                App.Logger.WriteException("MainWindow::UpdateBar_Click", ex);
+
+                _isUpdateDownloading = false;
+                UpdateBar.Message = String.Format(Strings.Menu_Update_Message, UpdateChecker.NewVersion);
+
+                Frontend.ShowMessageBox(Strings.Menu_Update_DownloadFailed, MessageBoxImage.Error);
+            }
+        }
+        #endregion
+
+        #region Integrity notice
+        private void ClientIntegrity_IssuesDetected(object? sender, EventArgs e) => Dispatcher.Invoke(ShowIntegrityIssues);
+
+        private void ShowIntegrityIssues()
+        {
+            IntegrityBar.Title = Strings.Menu_Mods_Integrity_InfoBar_Title;
+            IntegrityBar.Message = Strings.Menu_Mods_Integrity_InfoBar_Message;
+            IntegrityBar.Visibility = Visibility.Visible;
+        }
+
+        private void IntegrityBar_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.OriginalSource is System.Windows.Controls.Button)
+                return;
+
+            IntegrityBar.Visibility = Visibility.Collapsed;
+
+            Navigate(typeof(Bloxstrap.UI.Elements.Settings.Pages.ModsPage));
         }
         #endregion
 

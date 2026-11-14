@@ -19,6 +19,43 @@ namespace Bloxstrap
 
     public static class ClientIntegrity
     {
+        public static event EventHandler? IssuesDetectedEvent;
+
+        /// <summary>
+        /// Quietly checks the client in the background after startup and raises
+        /// IssuesDetectedEvent when files were changed outside the mod system.
+        /// </summary>
+        public static void RunStartupCheck()
+        {
+            Task.Run(async () =>
+            {
+                const string LOG_IDENT = "ClientIntegrity::RunStartupCheck";
+
+                try
+                {
+                    // let the app finish launching before doing any work
+                    await Task.Delay(TimeSpan.FromSeconds(10));
+
+                    if (GetVersionFolder() is null)
+                        return;
+
+                    var modified = Check().Where(x => x.Status == ModFileStatus.Modified).ToList();
+
+                    if (modified.Count == 0)
+                        return;
+
+                    App.Logger.WriteLine(LOG_IDENT, $"{modified.Count} client files were changed outside the mod system");
+
+                    IssuesDetectedEvent?.Invoke(null, EventArgs.Empty);
+                }
+                catch (Exception ex)
+                {
+                    App.Logger.WriteLine(LOG_IDENT, "Startup integrity check failed silently");
+                    App.Logger.WriteException(LOG_IDENT, ex);
+                }
+            });
+        }
+
         public static string? GetVersionFolder()
         {
             try

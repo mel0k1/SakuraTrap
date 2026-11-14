@@ -1,7 +1,87 @@
 ﻿namespace Bloxstrap.UI.ViewModels.Settings
 {
+    using System.Windows;
+    using System.Windows.Input;
+
+    using Microsoft.Win32;
+
+    using CommunityToolkit.Mvvm.Input;
+
+    using Bloxstrap.UI.Elements.Dialogs;
+
     public class BehaviourViewModel : NotifyPropertyChangedViewModel
     {
+        public ICommand ExportBackupCommand => new RelayCommand(ExportBackup);
+
+        public ICommand ImportBackupCommand => new RelayCommand(ImportBackup);
+
+        private void ExportBackup()
+        {
+            var dialog = new SaveFileDialog
+            {
+                Filter = "SakuraTrap backup (*.zip)|*.zip",
+                FileName = $"SakuraTrap-backup-{DateTime.Now:yyyyMMdd-HHmm}.zip"
+            };
+
+            if (dialog.ShowDialog() != true)
+                return;
+
+            try
+            {
+                ConfigBackup.Export(dialog.FileName);
+            }
+            catch (Exception ex)
+            {
+                App.Logger.WriteLine("BehaviourViewModel::ExportBackup", "Backup export failed");
+                App.Logger.WriteException("BehaviourViewModel::ExportBackup", ex);
+
+                Frontend.ShowMessageBox(Strings.Menu_Behaviour_Backup_Failed, MessageBoxImage.Error);
+                return;
+            }
+
+            Frontend.ShowMessageBox(String.Format(Strings.Menu_Behaviour_Backup_ExportDone, dialog.FileName), MessageBoxImage.Information);
+        }
+
+        private void ImportBackup()
+        {
+            var dialog = new OpenFileDialog { Filter = "SakuraTrap backup (*.zip)|*.zip" };
+
+            if (dialog.ShowDialog() != true)
+                return;
+
+            if (!ConfigBackup.IsValidBackup(dialog.FileName))
+            {
+                Frontend.ShowMessageBox(Strings.Menu_Behaviour_Backup_Invalid, MessageBoxImage.Error);
+                return;
+            }
+
+            var result = Frontend.ShowMessageBox(
+                Strings.Menu_Behaviour_Backup_ImportConfirm,
+                MessageBoxImage.Warning,
+                MessageBoxButton.YesNo
+            );
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                ConfigBackup.Import(dialog.FileName);
+            }
+            catch (Exception ex)
+            {
+                App.Logger.WriteLine("BehaviourViewModel::ImportBackup", "Backup import failed");
+                App.Logger.WriteException("BehaviourViewModel::ImportBackup", ex);
+
+                Frontend.ShowMessageBox(Strings.Menu_Behaviour_Backup_Failed, MessageBoxImage.Error);
+                return;
+            }
+
+            Frontend.ShowMessageBox(Strings.Menu_Behaviour_Backup_ImportDone, MessageBoxImage.Information);
+
+            ConfigBackup.RestartApp();
+        }
+
 
         public BehaviourViewModel()
         {

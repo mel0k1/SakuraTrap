@@ -5689,5 +5689,266 @@ namespace Bloxstrap.Resources {
                 return ResourceManager.GetString("Menu.Mods.Integrity.StatusClientMissing", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Download and install SakuraTrap v{0}? The app will restart..
+        /// </summary>
+        public static string Menu_Update_Confirm {
+            get {
+                return ResourceManager.GetString("Menu.Update.Confirm", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading SakuraTrap v{0}… {1}%.
+        /// </summary>
+        public static string Menu_Update_Downloading {
+            get {
+                return ResourceManager.GetString("Menu.Update.Downloading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The update download failed. You can download it manually from the release page..
+        /// </summary>
+        public static string Menu_Update_DownloadFailed {
+            get {
+                return ResourceManager.GetString("Menu.Update.DownloadFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Config backup.
+        /// </summary>
+        public static string Menu_Behaviour_Backup_Title {
+            get {
+                return ResourceManager.GetString("Menu.Behaviour.Backup.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Everything in one file: settings, FastFlags profiles, mod packs and their files, custom themes an....
+        /// </summary>
+        public static string Menu_Behaviour_Backup_Description {
+            get {
+                return ResourceManager.GetString("Menu.Behaviour.Backup.Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Export and import.
+        /// </summary>
+        public static string Menu_Behaviour_Backup_Actions_Title {
+            get {
+                return ResourceManager.GetString("Menu.Behaviour.Backup.Actions.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Import replaces the current config and restarts SakuraTrap..
+        /// </summary>
+        public static string Menu_Behaviour_Backup_Actions_Description {
+            get {
+                return ResourceManager.GetString("Menu.Behaviour.Backup.Actions.Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Export to ZIP.
+        /// </summary>
+        public static string Menu_Behaviour_Backup_Export {
+            get {
+                return ResourceManager.GetString("Menu.Behaviour.Backup.Export", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Import from ZIP.
+        /// </summary>
+        public static string Menu_Behaviour_Backup_Import {
+            get {
+                return ResourceManager.GetString("Menu.Behaviour.Backup.Import", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restore config from this backup? Current settings, profiles, packs and themes will be replaced, a....
+        /// </summary>
+        public static string Menu_Behaviour_Backup_ImportConfirm {
+            get {
+                return ResourceManager.GetString("Menu.Behaviour.Backup.ImportConfirm", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Backup saved: {0}.
+        /// </summary>
+        public static string Menu_Behaviour_Backup_ExportDone {
+            get {
+                return ResourceManager.GetString("Menu.Behaviour.Backup.ExportDone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Config restored. SakuraTrap will now restart..
+        /// </summary>
+        public static string Menu_Behaviour_Backup_ImportDone {
+            get {
+                return ResourceManager.GetString("Menu.Behaviour.Backup.ImportDone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This file is not a SakuraTrap backup..
+        /// </summary>
+        public static string Menu_Behaviour_Backup_Invalid {
+            get {
+                return ResourceManager.GetString("Menu.Behaviour.Backup.Invalid", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The backup operation failed..
+        /// </summary>
+        public static string Menu_Behaviour_Backup_Failed {
+            get {
+                return ResourceManager.GetString("Menu.Behaviour.Backup.Failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Rename mod pack.
+        /// </summary>
+        public static string Dialog_SaveModPack_RenameTitle {
+            get {
+                return ResourceManager.GetString("Dialog.SaveModPack.RenameTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string Menu_Mods_Packs_FilesTitle {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.FilesTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} files added to pack "{1}"..
+        /// </summary>
+        public static string Menu_Mods_Packs_AddedToPack {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.AddedToPack", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Add current mods to this pack.
+        /// </summary>
+        public static string Menu_Mods_Packs_AddTooltip {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.AddTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Rename pack.
+        /// </summary>
+        public static string Menu_Mods_Packs_RenameTooltip {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Packs.RenameTooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Client files were modified outside the mod system.
+        /// </summary>
+        public static string Menu_Mods_Integrity_InfoBar_Title {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.InfoBar.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Click to open the mods page and check integrity..
+        /// </summary>
+        public static string Menu_Mods_Integrity_InfoBar_Message {
+            get {
+                return ResourceManager.GetString("Menu.Mods.Integrity.InfoBar.Message", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Keep old versions.
+        /// </summary>
+        public static string Menu_Channel_OldVersions_Title {
+            get {
+                return ResourceManager.GetString("Menu.Channel.OldVersions.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to How many previous Roblox versions to keep for rollback. 0 deletes them all after an update..
+        /// </summary>
+        public static string Menu_Channel_OldVersions_Description {
+            get {
+                return ResourceManager.GetString("Menu.Channel.OldVersions.Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sakura theme by time of day.
+        /// </summary>
+        public static string Menu_Appearance_AutoTheme_Title {
+            get {
+                return ResourceManager.GetString("Menu.Appearance.AutoTheme.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sakura Light during the day (8:00–20:00), Sakura Night at night. Applies when the app starts..
+        /// </summary>
+        public static string Menu_Appearance_AutoTheme_Description {
+            get {
+                return ResourceManager.GetString("Menu.Appearance.AutoTheme.Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Custom accent color.
+        /// </summary>
+        public static string Menu_Appearance_AccentColor_Title {
+            get {
+                return ResourceManager.GetString("Menu.Appearance.AccentColor.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hex color like #FF7FAC. Empty — system accent..
+        /// </summary>
+        public static string Menu_Appearance_AccentColor_Description {
+            get {
+                return ResourceManager.GetString("Menu.Appearance.AccentColor.Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn't parse the color. Use the #RRGGBB format..
+        /// </summary>
+        public static string Menu_Appearance_AccentColor_Invalid {
+            get {
+                return ResourceManager.GetString("Menu.Appearance.AccentColor.Invalid", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        public static string Menu_Appearance_AccentColor_Reset {
+            get {
+                return ResourceManager.GetString("Menu.Appearance.AccentColor.Reset", resourceCulture);
+            }
+        }
     }
 }

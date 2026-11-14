@@ -81,6 +81,14 @@ namespace Bloxstrap.UI.ViewModels.Settings
 
         public ICommand DeletePackCommand => new RelayCommand<PackItem>(DeletePack);
 
+        public ICommand RenamePackCommand => new RelayCommand<PackItem>(RenamePack);
+
+        public ICommand AddToPackCommand => new RelayCommand<PackItem>(AddToPack);
+
+        public int LooseModsCount { get; private set; }
+
+        public bool HasLooseMods => LooseModsCount > 0;
+
         private void CreatePack()
         {
             var dialog = new SaveCustomProfileDialog(Strings.Dialog_SaveModPack_Title);
@@ -152,9 +160,78 @@ namespace Bloxstrap.UI.ViewModels.Settings
             RefreshPacks();
         }
 
+        private void RenamePack(PackItem? item)
+        {
+            if (item is null)
+                return;
+
+            var dialog = new SaveCustomProfileDialog(Strings.Dialog_SaveModPack_RenameTitle, item.Name);
+            dialog.ShowDialog();
+
+            if (dialog.Result != MessageBoxResult.OK || String.IsNullOrWhiteSpace(dialog.ProfileName))
+                return;
+
+            string name = string.Concat(dialog.ProfileName.Trim().Split(Path.GetInvalidFileNameChars())).Trim();
+
+            if (String.IsNullOrEmpty(name) || name == item.Name)
+                return;
+
+            if (App.ModPacks.Prop.ContainsKey(name))
+            {
+                Frontend.ShowMessageBox(String.Format(Strings.Menu_Mods_Packs_Exists, name), MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                App.ModPacks.Rename(item.Name, name);
+            }
+            catch (Exception ex)
+            {
+                App.Logger.WriteLine("ModsViewModel::RenamePack", $"Failed to rename pack '{item.Name}'");
+                App.Logger.WriteException("ModsViewModel::RenamePack", ex);
+
+                Frontend.ShowMessageBox(Strings.Menu_Mods_Packs_OperationFailed, MessageBoxImage.Error);
+                return;
+            }
+
+            RefreshPacks();
+        }
+
+        private void AddToPack(PackItem? item)
+        {
+            if (item is null)
+                return;
+
+            int count;
+
+            try
+            {
+                count = App.ModPacks.AddCurrentMods(item.Name);
+            }
+            catch (Exception ex)
+            {
+                App.Logger.WriteLine("ModsViewModel::AddToPack", $"Failed to add mods to pack '{item.Name}'");
+                App.Logger.WriteException("ModsViewModel::AddToPack", ex);
+
+                Frontend.ShowMessageBox(Strings.Menu_Mods_Packs_OperationFailed, MessageBoxImage.Error);
+                return;
+            }
+
+            if (count > 0)
+                Frontend.ShowMessageBox(String.Format(Strings.Menu_Mods_Packs_AddedToPack, count, item.Name), MessageBoxImage.Information);
+            else
+                Frontend.ShowMessageBox(Strings.Menu_Mods_Packs_NoMods, MessageBoxImage.Information);
+
+            RefreshPacks();
+        }
+
         private void RefreshPacks()
         {
             Packs.Clear();
+
+            LooseModsCount = App.ModPacks.CountLooseMods();
+            OnPropertyChanged(nameof(HasLooseMods));
 
             foreach (string name in App.ModPacks.Names)
                 Packs.Add(new PackItem(name));
@@ -288,6 +365,8 @@ namespace Bloxstrap.UI.ViewModels.Settings
         public string Name { get; }
 
         public string FilesLabel => String.Format(Strings.Menu_Mods_Packs_FilesCount, _pack.Files.Count);
+
+        public IReadOnlyList<string> Files => _pack.Files;
 
         public bool IsEnabled
         {

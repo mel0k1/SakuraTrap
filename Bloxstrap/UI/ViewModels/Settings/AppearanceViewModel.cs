@@ -99,6 +99,54 @@ namespace Bloxstrap.UI.ViewModels.Settings
             }
         }
 
+        public bool AutoTheme
+        {
+            get => App.Settings.Prop.AutoTheme;
+            set
+            {
+                App.Settings.Prop.AutoTheme = value;
+                ((MainWindow)Window.GetWindow(_page)!).ApplyTheme();
+
+                OnPropertyChanged(nameof(AutoTheme));
+            }
+        }
+
+        public string CustomAccentColor
+        {
+            get => App.Settings.Prop.CustomAccentColor;
+            set
+            {
+                string trimmed = value.Trim();
+
+                if (!String.IsNullOrEmpty(trimmed))
+                {
+                    try
+                    {
+                        _ = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(trimmed);
+                    }
+                    catch (FormatException)
+                    {
+                        Frontend.ShowMessageBox(Strings.Menu_Appearance_AccentColor_Invalid, MessageBoxImage.Error);
+                        OnPropertyChanged(nameof(CustomAccentColor));
+                        return;
+                    }
+                }
+
+                App.Settings.Prop.CustomAccentColor = trimmed;
+                ((MainWindow)Window.GetWindow(_page)!).ApplyTheme();
+
+                OnPropertyChanged(nameof(CustomAccentColor));
+            }
+        }
+
+        public ICommand ResetAccentColorCommand => new RelayCommand(() =>
+        {
+            App.Settings.Prop.CustomAccentColor = "";
+            ((MainWindow)Window.GetWindow(_page)!).ApplyTheme();
+
+            OnPropertyChanged(nameof(CustomAccentColor));
+        });
+
         public bool AcrylicBackdropEnabled
         {
             get => App.Settings.Prop.UseAcrylicBackground;

@@ -26,6 +26,32 @@ namespace Bloxstrap
         public string GetPackFolder(string name) => Path.Combine(PacksFolder, name);
 
         /// <summary>
+        /// Lists the mod files sitting loose in the Modifications folder,
+        /// excluding the pack storage and the flag manager's file.
+        /// </summary>
+        private static IEnumerable<string> LooseModFiles()
+        {
+            if (!Directory.Exists(Paths.Modifications))
+                yield break;
+
+            foreach (string file in Directory.GetFiles(Paths.Modifications, "*.*", SearchOption.AllDirectories))
+            {
+                string relativeFile = file.Substring(Paths.Modifications.Length + 1);
+
+                // the pack storage itself and the flag manager's file never belong to a pack
+                if (relativeFile.StartsWith(@"Packs\", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                if (relativeFile.Equals(FlagsFile, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                yield return relativeFile;
+            }
+        }
+
+        public int CountLooseMods() => LooseModFiles().Count();
+
+        /// <summary>
         /// Moves the loose mod files in the Modifications folder into a new pack.
         /// Returns the number of files moved, or 0 if there was nothing to move (no pack is created).
         /// </summary>
@@ -39,22 +65,15 @@ namespace Bloxstrap
             string packFolder = GetPackFolder(name);
             var files = new List<string>();
 
-            foreach (string file in Directory.GetFiles(Paths.Modifications, "*.*", SearchOption.AllDirectories))
+            foreach (string relativeFile in LooseModFiles())
             {
-                string relativeFile = file.Substring(Paths.Modifications.Length + 1);
-
-                // the pack storage itself and the flag manager's file never belong to a pack
-                if (relativeFile.StartsWith(@"Packs\", StringComparison.OrdinalIgnoreCase))
-                    continue;
-
-                if (relativeFile.Equals(FlagsFile, StringComparison.OrdinalIgnoreCase))
-                    continue;
-
                 string target = Path.Combine(packFolder, relativeFile);
                 Directory.CreateDirectory(Path.GetDirectoryName(target)!);
 
-                Filesystem.AssertReadOnly(file);
-                File.Move(file, target, true);
+                string source = Path.Combine(Paths.Modifications, relativeFile);
+
+                Filesystem.AssertReadOnly(source);
+                File.Move(source, target, true);
 
                 files.Add(relativeFile);
             }
@@ -62,15 +81,7 @@ namespace Bloxstrap
             if (files.Count == 0)
                 return 0;
 
-            // clean up the directories left behind by the moved files
-            foreach (string directory in Directory.GetDirectories(Paths.Modifications, "*", SearchOption.AllDirectories).OrderByDescending(x => x.Length))
-            {
-                if (directory.StartsWith(PacksFolder, StringComparison.OrdinalIgnoreCase))
-                    continue;
-
-                if (!Directory.EnumerateFileSystemEntries(directory).Any())
-                    Directory.Delete(directory);
-            }
+            PruneEmptyDirectories();
 
             Prop[name] = new ModPack { Files = files };
             Save();
@@ -78,6 +89,75 @@ namespace Bloxstrap
             App.Logger.WriteLine(LOG_IDENT, $"Created pack '{name}' from {files.Count} files");
 
             return files.Count;
+        }
+
+        /// <summary>
+        /// Moves the loose mod files in the Modifications folder into an existing pack.
+        /// Returns the number of files moved.
+        /// </summary>
+        public int AddCurrentMods(string name)
+        {
+            const string LOG_IDENT = "ModPackManager::AddCurrentMods";
+
+            if (!Prop.TryGetValue(name, out var pack))
+                throw new KeyNotFoundException($"Pack '{name}' does not exist");
+
+            string packFolder = GetPackFolder(name);
+            var files = new List<string>(pack.Files);
+            int added = 0;
+
+            foreach (string relativeFile in LooseModFiles())
+            {
+                string target = Path.Combine(packFolder, relativeFile);
+                Directory.CreateDirectory(Path.GetDirectoryName(target)!);
+
+                string source = Path.Combine(Paths.Modifications, relativeFile);
+
+                Filesystem.AssertReadOnly(source);
+                File.Move(source, target, true);
+
+                if (!files.Contains(relativeFile))
+                    files.Add(relativeFile);
+
+                added++;
+            }
+
+            if (added > 0)
+            {
+                pack.Files = files;
+                PruneEmptyDirectories();
+                Save();
+
+                App.Logger.WriteLine(LOG_IDENT, $"Added {added} files to pack '{name}'");
+            }
+
+            return added;
+        }
+
+        public void Rename(string oldName, string newName)
+        {
+            if (oldName == newName)
+                return;
+
+            if (Prop.ContainsKey(newName))
+                throw new InvalidOperationException($"Pack '{newName}' already exists");
+
+            if (!Prop.Remove(oldName, out var pack))
+                return;
+
+            string oldFolder = GetPackFolder(oldName);
+            string newFolder = GetPackFolder(newName);
+
+            if (Directory.Exists(oldFolder))
+            {
+                if (Directory.Exists(newFolder))
+                    Directory.Delete(newFolder, true);
+
+                Directory.Move(oldFolder, newFolder);
+            }
+
+            Prop[newName] = pack;
+            Save();
         }
 
         public void SetEnabled(string name, bool enabled)

@@ -102,6 +102,14 @@ namespace Bloxstrap.UI.ViewModels.Settings
             set => App.Settings.Prop.CheckForUpdates = value;
         }
 
+        public IReadOnlyList<int> OldVersionsOptions { get; } = new List<int> { 0, 1, 2 };
+
+        public int OldVersionsKept
+        {
+            get => App.Settings.Prop.OldVersionsKept;
+            set => App.Settings.Prop.OldVersionsKept = value;
+        }
+
         public bool StaticDirectory
         {
             get => App.Settings.Prop.StaticDirectory;

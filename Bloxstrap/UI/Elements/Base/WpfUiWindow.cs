@@ -34,16 +34,38 @@ namespace Bloxstrap.UI.Elements.Base
         {
             const int customThemeIndex = 2; // index for CustomTheme merged dictionary
 
+            var sakuraAccent = Color.FromRgb(0xFF, 0x7F, 0xAC);
             var selectedTheme = App.Settings.Prop.Theme;
+
+            // "sakura by time of day" mode overrides the manual choice
+            if (App.Settings.Prop.AutoTheme)
+            {
+                int hour = DateTime.Now.Hour;
+                selectedTheme = hour >= 8 && hour < 20 ? Enums.Theme.SakuraLight : Enums.Theme.SakuraNight;
+            }
 
             _themeService.SetTheme(selectedTheme.GetFinal() == Enums.Theme.Dark ? ThemeType.Dark : ThemeType.Light);
 
-            if (selectedTheme == Enums.Theme.SakuraNight)
+            var customAccentColor = ParseHexColor(App.Settings.Prop.CustomAccentColor);
+            bool sakuraTheme = selectedTheme is Enums.Theme.SakuraNight or Enums.Theme.SakuraLight;
+
+            if (sakuraTheme && customAccentColor is null)
             {
-                Application.Current.Resources["SystemAccentColor"] = Color.FromRgb(0xFF, 0x7F, 0xAC);
-                Application.Current.Resources["SystemAccentColorPrimaryBrush"] = new SolidColorBrush(Color.FromRgb(0xFF, 0x7F, 0xAC));
+                Application.Current.Resources["SystemAccentColor"] = sakuraAccent;
+                Application.Current.Resources["SystemAccentColorPrimaryBrush"] = new SolidColorBrush(sakuraAccent);
                 Application.Current.Resources["SystemAccentColorSecondaryBrush"] = new SolidColorBrush(Color.FromRgb(0xFF, 0xB7, 0xD5));
                 Application.Current.Resources["SystemAccentColorTertiaryBrush"] = new SolidColorBrush(Color.FromRgb(0xE8, 0x5D, 0x94));
+            }
+            else if (customAccentColor is not null)
+            {
+                var color = customAccentColor.Value;
+
+                Application.Current.Resources["SystemAccentColor"] = color;
+                Application.Current.Resources["SystemAccentColorPrimaryBrush"] = new SolidColorBrush(color);
+                Application.Current.Resources["SystemAccentColorSecondaryBrush"] = new SolidColorBrush(Color.FromRgb(
+                    (byte)Math.Min(color.R + 0x38, 255), (byte)Math.Min(color.G + 0x38, 255), (byte)Math.Min(color.B + 0x38, 255)));
+                Application.Current.Resources["SystemAccentColorTertiaryBrush"] = new SolidColorBrush(Color.FromRgb(
+                    (byte)Math.Max(color.R - 0x17, 0), (byte)Math.Max(color.G - 0x22, 0), (byte)Math.Max(color.B - 0x18, 0)));
             }
             else
             {
@@ -86,6 +108,21 @@ namespace Bloxstrap.UI.Elements.Base
             this.BorderBrush = System.Windows.Media.Brushes.Red;
             this.BorderThickness = new Thickness(4);
 #endif
+        }
+
+        private static Color? ParseHexColor(string value)
+        {
+            if (String.IsNullOrWhiteSpace(value))
+                return null;
+
+            try
+            {
+                return (Color)ColorConverter.ConvertFromString(value.Trim());
+            }
+            catch (FormatException)
+            {
+                return null;
+            }
         }
 
         protected override void OnSourceInitialized(EventArgs e)

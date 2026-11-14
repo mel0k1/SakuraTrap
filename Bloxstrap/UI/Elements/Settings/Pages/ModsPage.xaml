@@ -117,13 +117,25 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" VerticalAlignment="Center">
                             <TextBlock Text="{Binding Name}" FontWeight="Medium" TextWrapping="Wrap" />
                             <TextBlock Text="{Binding FilesLabel}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                            <controls:Expander Margin="0,2,0,0" MaxWidth="520" HorizontalAlignment="Left" HeaderIcon="List16" HeaderText="{x:Static resources:Strings.Menu_Mods_Packs_FilesTitle}">
+                                <ItemsControl ItemsSource="{Binding Files, Mode=OneWay}" Margin="8,4,0,4">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" TextWrapping="Wrap" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </controls:Expander>
                         </StackPanel>
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding IsEnabled, Mode=TwoWay}" />
-                        <ui:Button Grid.Column="2" Margin="8,0,0,0" Icon="Delete16" Appearance="Danger" Command="{Binding DataContext.DeletePackCommand, RelativeSource={RelativeSource AncestorType={x:Type ui:UiPage}}}" CommandParameter="{Binding}" />
+                        <ui:Button Grid.Column="2" Margin="8,0,0,0" Icon="Add16" ToolTip="{x:Static resources:Strings.Menu_Mods_Packs_AddTooltip}" IsEnabled="{Binding DataContext.HasLooseMods, RelativeSource={RelativeSource AncestorType={x:Type ui:UiPage}}}" Command="{Binding DataContext.AddToPackCommand, RelativeSource={RelativeSource AncestorType={x:Type ui:UiPage}}}" CommandParameter="{Binding}" />
+                        <ui:Button Grid.Column="3" Margin="8,0,0,0" Icon="Edit16" ToolTip="{x:Static resources:Strings.Menu_Mods_Packs_RenameTooltip}" Command="{Binding DataContext.RenamePackCommand, RelativeSource={RelativeSource AncestorType={x:Type ui:UiPage}}}" CommandParameter="{Binding}" />
+                        <ui:Button Grid.Column="4" Margin="8,0,0,0" Icon="Delete16" Appearance="Danger" Command="{Binding DataContext.DeletePackCommand, RelativeSource={RelativeSource AncestorType={x:Type ui:UiPage}}}" CommandParameter="{Binding}" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

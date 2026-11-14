@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 
 namespace Bloxstrap.Extensions
 {
@@ -8,6 +8,9 @@ namespace Bloxstrap.Extensions
         {
             if (dialogTheme == Theme.SakuraNight)
                 return Theme.Dark;
+
+            if (dialogTheme == Theme.SakuraLight)
+                return Theme.Light;
 
             if (dialogTheme != Theme.Default)
                 return dialogTheme;

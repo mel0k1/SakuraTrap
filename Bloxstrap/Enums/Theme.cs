@@ -1,4 +1,4 @@
-﻿namespace Bloxstrap.Enums
+namespace Bloxstrap.Enums
 {
     public enum Theme
     {
@@ -7,6 +7,8 @@
         Light,
         Dark,
         [EnumName(StaticName = "Sakura Night")]
-        SakuraNight
+        SakuraNight,
+        [EnumName(StaticName = "Sakura Light")]
+        SakuraLight
     }
 }

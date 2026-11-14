@@ -353,6 +353,8 @@ namespace Bloxstrap
 
                 Task.Run(UpdateChecker.CheckDaily); // passive release check, at most once a day
 
+                ClientIntegrity.RunStartupCheck(); // passive client integrity check, warns through an InfoBar
+
                 WindowsRegistry.RegisterApis(); // we want to register those early on
                                                 // so we wont have any issues with bloxshade
 

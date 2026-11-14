@@ -1182,37 +1182,46 @@ namespace Bloxstrap
                 return;
             }
 
+            var deletableDirs = new List<string>();
+
             foreach (string dir in Directory.GetDirectories(Paths.Versions))
             {
                 string dirName = Path.GetFileName(dir);
 
-                if (
-                    !_staticDirectory && (dirName != App.RobloxState.Prop.Player.VersionGuid && dirName != App.RobloxState.Prop.Studio.VersionGuid) ||
-                    _staticDirectory && (dirName != "WindowsPlayer" && dirName != "WindowsStudio64")
-                    )
+                bool isCurrent = !_staticDirectory
+                    ? dirName == App.RobloxState.Prop.Player.VersionGuid || dirName == App.RobloxState.Prop.Studio.VersionGuid
+                    : dirName == "WindowsPlayer" || dirName == "WindowsStudio64";
+
+                if (!isCurrent)
+                    deletableDirs.Add(dir);
+            }
+
+            // the user can keep a few of the most recent old versions around for rollback
+            deletableDirs = deletableDirs.OrderByDescending(x => Directory.GetLastWriteTimeUtc(x)).ToList();
+
+            foreach (string dir in deletableDirs.Skip(App.Settings.Prop.OldVersionsKept))
+            {
+                // TODO: this is too expensive
+                //Filesystem.AssertReadOnlyDirectory(dir);
+
+                // check if it's still being used first
+                // we dont want to accidentally delete the files of a running roblox instance
+                if (!TryDeleteRobloxInDirectory(dir))
+                    continue;
+
+                try
                 {
-                    // TODO: this is too expensive
-                    //Filesystem.AssertReadOnlyDirectory(dir);
-
-                    // check if it's still being used first
-                    // we dont want to accidentally delete the files of a running roblox instance
-                    if (!TryDeleteRobloxInDirectory(dir))
-                        continue;
-
-                    try
-                    {
-                        Directory.Delete(dir, true);
-                    }
-                    catch (UnauthorizedAccessException ex)
-                    {
-                        App.Logger.WriteLine(LOG_IDENT, $"Failed to delete {dir}");
-                        App.Logger.WriteException(LOG_IDENT, ex);
-                    }
-                    catch (IOException ex)
-                    {
-                        App.Logger.WriteLine(LOG_IDENT, $"Failed to delete {dir}");
-                        App.Logger.WriteException(LOG_IDENT, ex);
-                    }
+                    Directory.Delete(dir, true);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    App.Logger.WriteLine(LOG_IDENT, $"Failed to delete {dir}");
+                    App.Logger.WriteException(LOG_IDENT, ex);
+                }
+                catch (IOException ex)
+                {
+                    App.Logger.WriteLine(LOG_IDENT, $"Failed to delete {dir}");
+                    App.Logger.WriteException(LOG_IDENT, ex);
                 }
             }
         }
