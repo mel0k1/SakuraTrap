@@ -1,4 +1,5 @@
-﻿using Bloxstrap.UI.Elements.Controls;
+﻿using Bloxstrap.Resources;
+using Bloxstrap.UI.Elements.Controls;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
@@ -106,6 +107,30 @@ namespace Bloxstrap.UI.ViewModels.Settings
                     OnPropertyChanged(nameof(DiscordActivityEnabled));
                     OnPropertyChanged(nameof(DiscordActivityJoinEnabled));
                 }
+            }
+        }
+
+        public string SessionStatsSummary
+        {
+            get
+            {
+                var sessions = App.SessionStats.Prop;
+
+                if (sessions.Count == 0)
+                    return Strings.Menu_Integrations_SessionStats_NoData;
+
+                var last = sessions.MaxBy(x => x.Start);
+                TimeSpan total = TimeSpan.Zero;
+
+                foreach (var session in sessions)
+                {
+                    if (session.End is not null)
+                        total += session.End.Value - session.Start;
+                }
+
+                return String.Format(Strings.Menu_Integrations_SessionStats_Last, $"{last.Start:G} ({last.GamesJoined})") + "\n" +
+                    String.Format(Strings.Menu_Integrations_SessionStats_Total, sessions.Count) + "\n" +
+                    String.Format(Strings.Menu_Integrations_SessionStats_Playtime, $"{total.TotalHours:F1}");
             }
         }
 

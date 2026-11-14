@@ -2,7 +2,11 @@
 
 using CommunityToolkit.Mvvm.Input;
 
+using Microsoft.Win32;
+
+using Bloxstrap.Resources;
 using Bloxstrap.Enums.FlagPresets;
+using Bloxstrap.UI.Elements.Dialogs;
 using System.Windows;
 using Bloxstrap.UI.Elements.Settings.Pages;
 using Wpf.Ui.Mvvm.Contracts;
@@ -143,6 +147,146 @@ namespace Bloxstrap.UI.ViewModels.Settings
                 OnPropertyChanged(nameof(MeshQualityEnabled));
             }
         }
+
+        public IReadOnlyList<int> HourOptions { get; } = Enumerable.Range(0, 24).ToList();
+
+        public IReadOnlyList<string> SchedulableProfileNames => FlagProfiles.Names.Concat(App.CustomProfiles.Names).ToList();
+
+        public bool ScheduleEnabled
+        {
+            get => App.Settings.Prop.ScheduleEnabled;
+            set => App.Settings.Prop.ScheduleEnabled = value;
+        }
+
+        public int ScheduleStartHour
+        {
+            get => App.Settings.Prop.ScheduleStartHour;
+            set
+            {
+                App.Settings.Prop.ScheduleStartHour = Math.Clamp(value, 0, 23);
+                OnPropertyChanged(nameof(ScheduleStartHour));
+            }
+        }
+
+        public int ScheduleEndHour
+        {
+            get => App.Settings.Prop.ScheduleEndHour;
+            set
+            {
+                App.Settings.Prop.ScheduleEndHour = Math.Clamp(value, 0, 23);
+                OnPropertyChanged(nameof(ScheduleEndHour));
+            }
+        }
+
+        public string ScheduleProfile
+        {
+            get => App.Settings.Prop.ScheduleProfile;
+            set => App.Settings.Prop.ScheduleProfile = value;
+        }
+
+        public IReadOnlyList<string> CustomProfileNames => App.CustomProfiles.Names;
+
+        public string? SelectedCustomProfile { get; set; }
+
+        public ICommand SaveProfileCommand => new RelayCommand(SaveCurrentProfile);
+
+        public ICommand ApplyCustomProfileCommand => new RelayCommand(ApplyCustomProfile);
+
+        public ICommand DeleteCustomProfileCommand => new RelayCommand(DeleteCustomProfile);
+
+        public ICommand ExportCustomProfileCommand => new RelayCommand(ExportCustomProfile);
+
+        public ICommand ImportCustomProfileCommand => new RelayCommand(ImportCustomProfile);
+
+        private void SaveCurrentProfile()
+        {
+            var dialog = new SaveCustomProfileDialog();
+            dialog.ShowDialog();
+
+            if (dialog.Result != MessageBoxResult.OK || String.IsNullOrWhiteSpace(dialog.ProfileName))
+                return;
+
+            App.CustomProfiles.SaveProfile(dialog.ProfileName.Trim());
+            RefreshCustomProfiles();
+        }
+
+        private void ApplyCustomProfile()
+        {
+            if (SelectedCustomProfile is null)
+                return;
+
+            App.CustomProfiles.Apply(SelectedCustomProfile);
+            RequestPageReloadEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void DeleteCustomProfile()
+        {
+            if (SelectedCustomProfile is null)
+                return;
+
+            App.CustomProfiles.Delete(SelectedCustomProfile);
+            RefreshCustomProfiles();
+        }
+
+        private void ExportCustomProfile()
+        {
+            if (SelectedCustomProfile is null)
+                return;
+
+            var dialog = new SaveFileDialog { Filter = $"{Strings.FileTypes_JSONFiles}|*.json", FileName = $"{SelectedCustomProfile}.json" };
+
+            if (dialog.ShowDialog() != true)
+                return;
+
+            App.CustomProfiles.Export(SelectedCustomProfile, dialog.FileName);
+        }
+
+        private void ImportCustomProfile()
+        {
+            var dialog = new OpenFileDialog { Filter = $"{Strings.FileTypes_JSONFiles}|*.json" };
+
+            if (dialog.ShowDialog() != true)
+                return;
+
+            try
+            {
+                App.CustomProfiles.Import(dialog.FileName);
+            }
+            catch (Exception)
+            {
+                Frontend.ShowMessageBox(Strings.Menu_FastFlags_ImportFailed, MessageBoxImage.Error);
+                return;
+            }
+
+            RefreshCustomProfiles();
+        }
+
+        private void RefreshCustomProfiles()
+        {
+            OnPropertyChanged(nameof(CustomProfileNames));
+            SelectedCustomProfile = null;
+            OnPropertyChanged(nameof(SelectedCustomProfile));
+        }
+
+        public bool HardwareRecommendationVisible => App.State.Prop.HardwareProfileRecommended is not null && !App.State.Prop.HardwareProfileDismissed;
+
+        public string HardwareRecommendationText => String.Format(
+            Strings.Menu_FastFlags_HardwareRecommendation_Message,
+            App.State.Prop.HardwareProfileGpuName,
+            App.State.Prop.HardwareProfileRecommended
+        );
+
+        public ICommand ApplyHardwareRecommendationCommand => new RelayCommand(() =>
+        {
+            if (App.State.Prop.HardwareProfileRecommended is not null)
+                SelectedProfile = App.State.Prop.HardwareProfileRecommended;
+        });
+
+        public ICommand DismissHardwareRecommendationCommand => new RelayCommand(() =>
+        {
+            App.State.Prop.HardwareProfileDismissed = true;
+            OnPropertyChanged(nameof(HardwareRecommendationVisible));
+        });
 
         public bool ResetConfiguration
         {

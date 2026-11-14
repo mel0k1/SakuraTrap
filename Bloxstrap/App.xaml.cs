@@ -65,6 +65,10 @@ namespace Bloxstrap
 
         public static readonly GlobalSettingsManager GlobalSettings = new();
 
+        public static readonly CustomProfileManager CustomProfiles = new();
+
+        public static readonly SessionStatsManager SessionStats = new();
+
         public static readonly CookiesManager Cookies = new();
 
         public static readonly HttpClient HttpClient = new(
@@ -321,6 +325,8 @@ namespace Bloxstrap
                 RobloxState.Load();
                 FastFlags.Load();
                 GlobalSettings.Load();
+                CustomProfiles.Load(false);
+                SessionStats.Load(false);
 
                 Logger.WriteLine(LOG_IDENT, $"Distributor: {Settings.Prop.DistributorType}");
 
@@ -334,6 +340,8 @@ namespace Bloxstrap
                 }
 
                 Locale.Set(Settings.Prop.Locale);
+
+                HardwareProfileDetector.RunIfPending();
 
                 if (!LaunchSettings.BypassUpdateCheck)
                     Installer.HandleUpgrade();

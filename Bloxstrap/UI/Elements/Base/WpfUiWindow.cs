@@ -34,11 +34,24 @@ namespace Bloxstrap.UI.Elements.Base
         {
             const int customThemeIndex = 2; // index for CustomTheme merged dictionary
 
-            _themeService.SetTheme(App.Settings.Prop.Theme.GetFinal() == Enums.Theme.Dark ? ThemeType.Dark : ThemeType.Light);
-            _themeService.SetSystemAccent();
+            var selectedTheme = App.Settings.Prop.Theme;
+
+            _themeService.SetTheme(selectedTheme.GetFinal() == Enums.Theme.Dark ? ThemeType.Dark : ThemeType.Light);
+
+            if (selectedTheme == Enums.Theme.SakuraNight)
+            {
+                Application.Current.Resources["SystemAccentColor"] = Color.FromRgb(0xFF, 0x7F, 0xAC);
+                Application.Current.Resources["SystemAccentColorPrimaryBrush"] = new SolidColorBrush(Color.FromRgb(0xFF, 0x7F, 0xAC));
+                Application.Current.Resources["SystemAccentColorSecondaryBrush"] = new SolidColorBrush(Color.FromRgb(0xFF, 0xB7, 0xD5));
+                Application.Current.Resources["SystemAccentColorTertiaryBrush"] = new SolidColorBrush(Color.FromRgb(0xE8, 0x5D, 0x94));
+            }
+            else
+            {
+                _themeService.SetSystemAccent();
+            }
 
             // there doesn't seem to be a way to query the name for merged dictionaries
-            var dict = new ResourceDictionary { Source = new Uri($"pack://application:,,,/UI/Style/{Enum.GetName(App.Settings.Prop.Theme.GetFinal())}.xaml") };
+            var dict = new ResourceDictionary { Source = new Uri($"pack://application:,,,/UI/Style/{Enum.GetName(selectedTheme == Enums.Theme.Default ? selectedTheme.GetFinal() : selectedTheme)}.xaml") };
 
             this.Resources["MainWindowBackgroundBrush"] = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0));
 

@@ -49,6 +49,71 @@
             <ComboBox Margin="5,0,0,0" Padding="10,5,10,5" Width="200" ItemsSource="{Binding ProfileNames, Mode=OneTime}" SelectedItem="{Binding SelectedProfile, Mode=TwoWay}" />
         </controls:OptionControl>
 
+        <ui:InfoBar Margin="0,8,0,0" IsOpen="{Binding HardwareRecommendationVisible, Mode=OneWay}" IsClosable="False" Severity="Informational"
+                    Title="{x:Static resources:Strings.Menu_FastFlags_HardwareRecommendation_Title}" Message="{Binding HardwareRecommendationText, Mode=OneWay}">
+            <ui:InfoBar.Tag>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <ui:Button Margin="0,0,8,0" Content="{x:Static resources:Strings.Common_Apply}" Command="{Binding ApplyHardwareRecommendationCommand}" />
+                    <Button Content="{x:Static resources:Strings.Common_Dismiss}" Command="{Binding DismissHardwareRecommendationCommand}" />
+                </StackPanel>
+            </ui:InfoBar.Tag>
+        </ui:InfoBar>
+
+        <ui:CardExpander Margin="0,8,0,0">
+            <ui:CardExpander.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock FontSize="14" Text="{x:Static resources:Strings.Menu_FastFlags_Scheduler_Title}" />
+                        <TextBlock FontSize="12" Text="{x:Static resources:Strings.Menu_FastFlags_Scheduler_Description}"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" />
+                    </StackPanel>
+                    <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding ScheduleEnabled, Mode=TwoWay}" />
+                </Grid>
+            </ui:CardExpander.Header>
+            <Grid Margin="16,8,16,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{x:Static resources:Strings.Menu_FastFlags_Scheduler_StartHour}" Margin="0,0,0,4" />
+                    <ComboBox ItemsSource="{Binding HourOptions, Mode=OneTime}" SelectedItem="{Binding ScheduleStartHour, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="{x:Static resources:Strings.Menu_FastFlags_Scheduler_EndHour}" Margin="0,0,0,4" />
+                    <ComboBox ItemsSource="{Binding HourOptions, Mode=OneTime}" SelectedItem="{Binding ScheduleEndHour, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                </StackPanel>
+                <StackPanel Grid.Column="4">
+                    <TextBlock Text="{x:Static resources:Strings.Menu_FastFlags_Scheduler_Profile}" Margin="0,0,0,4" />
+                    <ComboBox ItemsSource="{Binding SchedulableProfileNames, Mode=OneWay}" SelectedItem="{Binding ScheduleProfile, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                </StackPanel>
+            </Grid>
+        </ui:CardExpander>
+
+        <TextBlock Text="{x:Static resources:Strings.Menu_FastFlags_CustomProfiles_Title}" FontSize="20" FontWeight="Medium" Margin="0,16,0,0" />
+        <TextBlock Text="{x:Static resources:Strings.Menu_FastFlags_CustomProfiles_Description}" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0" />
+        <Grid Margin="0,8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Column="0" MinWidth="200" HorizontalAlignment="Left" ItemsSource="{Binding CustomProfileNames, Mode=OneWay}" SelectedItem="{Binding SelectedCustomProfile, Mode=TwoWay}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <ui:Button Margin="4,0,0,0" Icon="Play24" Content="{x:Static resources:Strings.Common_Apply}" Command="{Binding ApplyCustomProfileCommand}" />
+                <ui:Button Margin="4,0,0,0" Icon="Save24" Content="{x:Static resources:Strings.Common_Save}" Command="{Binding SaveProfileCommand}" />
+                <ui:Button Margin="4,0,0,0" Icon="ArrowExportLtr24" Content="{x:Static resources:Strings.Common_Export}" Command="{Binding ExportCustomProfileCommand}" />
+                <ui:Button Margin="4,0,0,0" Icon="ArrowImport24" Content="{x:Static resources:Strings.Common_Import}" Command="{Binding ImportCustomProfileCommand}" />
+                <ui:Button Margin="4,0,0,0" Icon="Delete24" Content="{x:Static resources:Strings.Common_Delete}" Command="{Binding DeleteCustomProfileCommand}" />
+            </StackPanel>
+        </Grid>
+
         <TextBlock Text="{x:Static resources:Strings.Common_Geometry}" FontSize="16" FontWeight="Medium" Margin="0,16,0,0" />
         <ui:CardExpander Margin="0,8,0,0" IsExpanded="{Binding Path=MeshQualityEnabled, Mode=OneWay}" Style="{StaticResource NoUserExpansionCardExpanderStyle}">
             <ui:CardExpander.Header>

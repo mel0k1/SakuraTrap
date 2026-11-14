@@ -6,6 +6,9 @@ namespace Bloxstrap.Extensions
     {
         public static Theme GetFinal(this Theme dialogTheme)
         {
+            if (dialogTheme == Theme.SakuraNight)
+                return Theme.Dark;
+
             if (dialogTheme != Theme.Default)
                 return dialogTheme;
 

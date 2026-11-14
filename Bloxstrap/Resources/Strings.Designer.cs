@@ -5212,5 +5212,176 @@ namespace Bloxstrap.Resources {
                 return ResourceManager.GetString("Menu.FastFlags.Profile.Description", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Common_Save {
+            get {
+                return ResourceManager.GetString("Common.Save", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        public static string Common_Apply {
+            get {
+                return ResourceManager.GetString("Common.Apply", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Dismiss.
+        /// </summary>
+        public static string Common_Dismiss {
+            get {
+                return ResourceManager.GetString("Common.Dismiss", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Save profile as.
+        /// </summary>
+        public static string Dialog_SaveCustomProfile_Title {
+            get {
+                return ResourceManager.GetString("Dialog.SaveCustomProfile.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Custom profiles.
+        /// </summary>
+        public static string Menu_FastFlags_CustomProfiles_Title {
+            get {
+                return ResourceManager.GetString("Menu.FastFlags.CustomProfiles.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Save your current FastFlags as a named profile, apply it later, or share it as a JSON file..
+        /// </summary>
+        public static string Menu_FastFlags_CustomProfiles_Description {
+            get {
+                return ResourceManager.GetString("Menu.FastFlags.CustomProfiles.Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn't read the profile file. Make sure it is a JSON object with flag names as keys..
+        /// </summary>
+        public static string Menu_FastFlags_ImportFailed {
+            get {
+                return ResourceManager.GetString("Menu.FastFlags.ImportFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hardware recommendation.
+        /// </summary>
+        public static string Menu_FastFlags_HardwareRecommendation_Title {
+            get {
+                return ResourceManager.GetString("Menu.FastFlags.HardwareRecommendation.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: recommended profile — {1}.
+        /// </summary>
+        public static string Menu_FastFlags_HardwareRecommendation_Message {
+            get {
+                return ResourceManager.GetString("Menu.FastFlags.HardwareRecommendation.Message", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Profile scheduler.
+        /// </summary>
+        public static string Menu_FastFlags_Scheduler_Title {
+            get {
+                return ResourceManager.GetString("Menu.FastFlags.Scheduler.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically applies the chosen profile during the configured hours on every Roblox launch..
+        /// </summary>
+        public static string Menu_FastFlags_Scheduler_Description {
+            get {
+                return ResourceManager.GetString("Menu.FastFlags.Scheduler.Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to From (hour).
+        /// </summary>
+        public static string Menu_FastFlags_Scheduler_StartHour {
+            get {
+                return ResourceManager.GetString("Menu.FastFlags.Scheduler.StartHour", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to To (hour).
+        /// </summary>
+        public static string Menu_FastFlags_Scheduler_EndHour {
+            get {
+                return ResourceManager.GetString("Menu.FastFlags.Scheduler.EndHour", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduled profile.
+        /// </summary>
+        public static string Menu_FastFlags_Scheduler_Profile {
+            get {
+                return ResourceManager.GetString("Menu.FastFlags.Scheduler.Profile", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Session statistics.
+        /// </summary>
+        public static string Menu_Integrations_SessionStats_Title {
+            get {
+                return ResourceManager.GetString("Menu.Integrations.SessionStats.Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No sessions recorded yet..
+        /// </summary>
+        public static string Menu_Integrations_SessionStats_NoData {
+            get {
+                return ResourceManager.GetString("Menu.Integrations.SessionStats.NoData", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Last session: {0}.
+        /// </summary>
+        public static string Menu_Integrations_SessionStats_Last {
+            get {
+                return ResourceManager.GetString("Menu.Integrations.SessionStats.Last", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sessions recorded: {0}.
+        /// </summary>
+        public static string Menu_Integrations_SessionStats_Total {
+            get {
+                return ResourceManager.GetString("Menu.Integrations.SessionStats.Total", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Total play time: {0} h.
+        /// </summary>
+        public static string Menu_Integrations_SessionStats_Playtime {
+            get {
+                return ResourceManager.GetString("Menu.Integrations.SessionStats.Playtime", resourceCulture);
+            }
+        }
     }
 }

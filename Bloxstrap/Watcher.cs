@@ -62,6 +62,11 @@ namespace Bloxstrap
             {
                 ActivityWatcher = new(_watcherData.LogFile) { PrivateServer = _watcherData.PrivateServer };
 
+                ActivityWatcher.OnGameJoin += delegate
+                {
+                    App.SessionStats.AddGameJoin();
+                };
+
                 if (App.Settings.Prop.UseDisableAppPatch)
                 {
                     ActivityWatcher.OnAppClose += delegate
@@ -122,6 +127,9 @@ namespace Bloxstrap
 
             while (Utilities.GetProcessesSafe().Any(x => x.Id == _watcherData.ProcessId))
                 await Task.Delay(1000);
+
+            App.SessionStats.FinalizePendingSessions();
+            App.SessionStats.Save();
 
             AppStorageManager.Apply();
 

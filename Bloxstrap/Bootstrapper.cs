@@ -337,6 +337,12 @@ namespace Bloxstrap
                         Frontend.ShowBalloonTip(Strings.Bootstrapper_ModificationsFailed_Title, Strings.Bootstrapper_ModificationsFailed_Message, ToolTipIcon.Warning);
                 }
 
+                if (App.Settings.Prop.ScheduleEnabled)
+                {
+                    ProfileScheduler.ApplyPendingProfile(App.FastFlags);
+                    App.FastFlags.Save();
+                }
+
                 await StartRoblox();
             }
 
@@ -874,6 +880,9 @@ namespace Bloxstrap
                 File.Delete(AppData.ExecutablePath);
                 throw;
             }
+
+            if (!IsStudioLaunch)
+                App.SessionStats.BeginSession(_appPid);
 
             App.Logger.WriteLine(LOG_IDENT, $"Started Roblox (PID {_appPid}), waiting for log file");
 

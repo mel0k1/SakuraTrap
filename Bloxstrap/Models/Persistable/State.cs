@@ -16,6 +16,14 @@ namespace Bloxstrap.Models.Persistable
 
         public bool ForceReinstall { get; set; } = false;
 
+        public bool HardwareDetectDone { get; set; } = false;
+
+        public string? HardwareProfileRecommended { get; set; } = null;
+
+        public string? HardwareProfileGpuName { get; set; } = null;
+
+        public bool HardwareProfileDismissed { get; set; } = false;
+
         public WindowState SettingsWindow { get; set; } = new();
 
         #region Deprecated properties

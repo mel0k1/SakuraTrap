@@ -5,6 +5,8 @@
         [EnumName(FromTranslation = "Common.SystemDefault")]
         Default,
         Light,
-        Dark
+        Dark,
+        [EnumName(StaticName = "Sakura Night")]
+        SakuraNight
     }
 }
